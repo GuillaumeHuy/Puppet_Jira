@@ -1,0 +1,36 @@
+#!/bin/sh e
+# JIRA startup script
+#chkconfig: 2345 80 05
+#description: JIRA
+# Define some variables
+# Name of app ( JIRA, Confluence, etc )
+APP=jira
+# Name of the user to run as
+USER=jira
+# Location of application's bin directory
+BASE=/opt/atlassian/jira
+
+case "$1" in
+     # Start command
+     start)
+	echo "Starting $APP"
+	sudo -i -u $USER -- sh -c "cd $BASE/bin ; ./startjira.sh" &> /dev/null
+	;;
+     # Stop command
+     stop)
+	echo "Stopping $APP"
+	sudo -i -u $USER -- sh -c "cd $BASE/bin ; ./stopjira.sh" &> /dev/null
+	;;
+     # Restart command
+     restart)
+	$0 stop
+	sleep 5
+	$0 start
+	;;
+     *)
+	echo "Usage: service $APP {start|restart|stop}"
+	exit 1
+	;;
+esac
+
+exit 0
